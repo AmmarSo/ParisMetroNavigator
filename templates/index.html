@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Paris Metro</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/ratp.jpg') }}" type="image/x-icon">
+
+</head>
+<br>
+    <nav class="navbar">
+        <img src="https://www.science-accueil.org/wp-content/uploads/2019/08/Logo-RATP-quadri-vertical-Converti-2.png" id="t3" alt="Ratp Logo" width="80px" height="80px" style="opacity: 0.9;">
+        <a href="http://127.0.0.1:5000/" class="navbar-link">Itinéraires</a>
+        <a href="https://www.ratp.fr/plans" target="_blank" class="navbar-link">Plans</a>
+        <a href="https://www.ratp.fr/horaires-metro" target="_blank" class="navbar-link">Horaires</a>
+    </nav>
+    
+    <div class="container">
+        <div class="form-container">
+            <form method="POST">
+                <label for="start_station">Station de départ:</label>
+                <select name="start_station" id="start_station">
+                {% for station in stations %}
+                    {% set line_number = station.split()[-1] %}
+                    {% set station_name = ' '.join(station.split()[:-1]) %}
+                    <option value="{{ station_name }}">{{ station_name }} | Ligne: {{ line_number }}</option>
+                {% endfor %}
+                </select>
+                <label for="end_station">Station d'arrivée:</label>
+                <select name="end_station" id="end_station">
+                {% for station in stations %}
+                    {% set line_number = station.split()[-1] %}
+                    {% set station_name = ' '.join(station.split()[:-1]) %}
+                    <option value="{{ station_name }}">{{ station_name }} | Ligne: {{ line_number }}</option>
+                {% endfor %}
+        </select>
+                <input type="submit" value="Trouver le trajet le plus rapide">
+            </form>
+            {% if shortest_path %}
+            <p id="t1">Le trajet le plus rapide est de {{ shortest_distance }} minutes.</p>
+            <p id="t2">Stations à traverser :</p>
+            <ul>
+                {% for station in shortest_path %}
+                <li>{{ station }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        <div class="map-container">
+            {{ map_html|safe }}
+        </div>
+    </div>
+    </br>
+</body>
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-logo">
+            <a href="https://www.ratp.fr/" target="_blank"><img src="https://www.science-accueil.org/wp-content/uploads/2019/08/Logo-RATP-quadri-vertical-Converti-2.png" alt="RATP Logo"></a>
+        </div>
+        <div class="footer-logo2">
+            <a href="https://www.instagram.com/ratp/" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram Logo"></a>
+            <a href="https://www.facebook.com/RATPofficiel/?locale=fr_FR" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/2048px-Facebook_f_logo_%282019%29.svg.png" alt="Instagram Logo"></a>
+            <a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fwww.ratp.fr%2F&ref_src=twsrc%5Etfw%7Ctwcamp%5Ebuttonembed%7Ctwterm%5Efollow%7Ctwgr%5ERATPgroup&screen_name=RATPgroup" target="_blank"><img src="https://www.doigtdecole.com/wp-content/uploads/2020/03/logo-rond-twitter.png" alt="Instagram Logo"></a>
+        </div>
+        <div class="footer-text">
+            <p>© 2023 RATP - Tous droits réservés</p>
+        </div>
+    </div>
+</footer>
+
+
+</html>
